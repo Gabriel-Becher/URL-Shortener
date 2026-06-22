@@ -13,13 +13,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/Gabriel-Becher/URL-Shortener/issues"
   },
   "homepage": "https://github.com/Gabriel-Becher/URL-Shortener#readme",
   "dependencies": {
     "express": "^5.2.1",
+    "nanoid": "^5.1.15",
     "pg": "^8.22.0"
   }
 }
