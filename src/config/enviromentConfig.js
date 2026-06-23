@@ -10,6 +10,7 @@ const configs = {
   dbPassword: process.env.POSTGRES_PASSWORD || "",
   dbName: process.env.POSTGRES_DB || "",
   dbPort: process.env.POSTGRES_PORT || 5432,
+  redisHost: process.env.REDIS_HOST || "localhost",
   redisPort: process.env.REDIS_PORT || 6379,
 };
 
