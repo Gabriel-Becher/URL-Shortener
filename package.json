@@ -20,7 +20,10 @@
   "homepage": "https://github.com/Gabriel-Becher/URL-Shortener#readme",
   "dependencies": {
     "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
     "nanoid": "^5.1.15",
-    "pg": "^8.22.0"
+    "pg": "^8.22.0",
+    "rate-limit-redis": "^5.0.0",
+    "redis": "^6.0.0"
   }
 }
