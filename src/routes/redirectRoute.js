@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import pool from "../db/dbConnection.js";
 import { redis } from "../db/redisConnection.js";
 
@@ -17,7 +16,9 @@ export const redirectUrl = async (req, res) => {
       return res.status(404).json({ error: "URL not found" });
     }
     //Store in cache for future requests
-    await redis.set(slug, result.rows[0].original, "EX", 60 * 60 * 24 * 1); //Less time than creation
+    await redis.set(slug, result.rows[0].original, {
+      ex: 60 * 60 * 24 * 7,
+    });
     res.redirect(result.rows[0].original);
   } catch (error) {
     console.error("Error:", error);
