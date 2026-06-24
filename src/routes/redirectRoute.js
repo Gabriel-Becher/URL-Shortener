@@ -7,6 +7,7 @@ export const redirectUrl = async (req, res) => {
     //Try cache first
     const cachedUrl = await redis.get(slug);
     if (cachedUrl) {
+      redis.incr(`clicks:${slug}`); // Increment clicks
       return res.redirect(cachedUrl);
     }
     const query = "SELECT original FROM urls WHERE slug = $1";
@@ -19,6 +20,7 @@ export const redirectUrl = async (req, res) => {
     await redis.set(slug, result.rows[0].original, {
       ex: 60 * 60 * 24 * 7,
     });
+    redis.incr(`clicks:${slug}`);
     res.redirect(result.rows[0].original);
   } catch (error) {
     console.error("Error:", error);

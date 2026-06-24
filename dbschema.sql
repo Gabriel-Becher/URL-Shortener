@@ -2,6 +2,7 @@ CREATE TABLE urls (
   id        SERIAL PRIMARY KEY,
   slug      VARCHAR(8) UNIQUE NOT NULL,
   original  TEXT NOT NULL,
+  total_clicks INTEGER DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW()
 );
  
