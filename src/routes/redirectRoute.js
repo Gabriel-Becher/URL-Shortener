@@ -3,6 +3,9 @@ import { redis } from "../db/redisConnection.js";
 
 export const redirectUrl = async (req, res) => {
   const slug = req.params.slug;
+  if (!slug || !/^[a-zA-Z0-9_-]{8}$$/.test(slug)) {
+    return res.status(400).json({ error: "Invalid slug format" });
+  }
   try {
     //Try cache first
     const cachedUrl = await redis.get(slug);
