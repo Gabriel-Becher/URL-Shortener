@@ -9,14 +9,25 @@ export const getAnalytics = async (req, res) => {
 
   try {
     if (!slug) {
+      // Fetch all analytics only from the database.
       result = await poll.query(
         "SELECT slug, total_clicks FROM urls ORDER BY total_clicks DESC",
       );
     } else {
-      result = await poll.query(
-        "SELECT slug, total_clicks FROM urls WHERE slug = $1",
-        [slug],
-      );
+      //For precise information sync first then retrieve analytics
+      const redis_clicks = await redis.get(`clicks:${slug}`);
+      if (redis_clicks !== null) {
+        result = await poll.query(
+          "UPDATE urls SET total_clicks = total_clicks + $1 WHERE slug = $2 RETURNING total_clicks",
+          [redis_clicks, slug],
+        );
+        await redis.del(`clicks:${slug}`);
+      } else {
+        result = await pool.query(
+          "SELECT slug, total_clicks FROM urls WHERE slug = $1",
+          [slug],
+        );
+      }
     }
     if (result?.rows.length === 0) {
       return res.status(404).json({ error: "Slug not found" });
