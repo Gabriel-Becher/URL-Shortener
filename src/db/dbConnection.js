@@ -1,5 +1,5 @@
 import PG from "pg";
-import configs from "../config/enviromentConfig.js";
+import configs from "../config/environmentConfig.js";
 
 const { Pool } = PG;
 

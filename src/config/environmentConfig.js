@@ -4,7 +4,7 @@ loadEnvFile("./.env");
 
 const configs = {
   appPort: process.env.PORT || 3000,
-  host: process.env.HOST || "localhost",
+  appHost: process.env.HOST || "localhost",
   dbHost: process.env.DB_HOST || "localhost",
   dbUser: process.env.POSTGRES_USER || "",
   dbPassword: process.env.POSTGRES_PASSWORD || "",

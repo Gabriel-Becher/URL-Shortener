@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import pool from "../db/dbConnection.js";
 import { redis } from "../db/redisConnection.js";
+import configs from "../config/environmentConfig.js";
 
 const generateUniqueSlug = async () => {
   while (true) {
@@ -19,6 +20,7 @@ const generateUniqueSlug = async () => {
 export const shortenUrl = async (req, res) => {
   const { url } = req.body;
   const slug = await generateUniqueSlug();
+  const host = `${configs.appHost}:${configs.appPort}`;
 
   //validate URL format
   try {
@@ -41,7 +43,7 @@ export const shortenUrl = async (req, res) => {
         "INSERT INTO urls (slug, original) VALUES ($1, $2) RETURNING *";
       const values = [slug, url];
       const result = await pool.query(query, values);
-      await redis.set(url, slug, {
+      await redis.set(slug, url, {
         ex: 60 * 60 * 24 * 7,
       });
       res.status(201).json({ slug: result.rows[0].slug });

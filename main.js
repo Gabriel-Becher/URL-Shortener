@@ -1,5 +1,5 @@
 import express from "express";
-import configs from "./src/config/enviromentConfig.js";
+import configs from "./src/config/environmentConfig.js";
 
 import { redis } from "./src/db/redisConnection.js";
 
