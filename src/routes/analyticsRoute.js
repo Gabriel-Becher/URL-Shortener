@@ -1,4 +1,5 @@
-import poll from "../db/dbConnection.js";
+import pool from "../db/dbConnection.js";
+import { redis } from "../db/redisConnection.js";
 
 export const getAnalytics = async (req, res) => {
   const slug = req.params.slug;
@@ -10,14 +11,14 @@ export const getAnalytics = async (req, res) => {
   try {
     if (!slug) {
       // Fetch all analytics only from the database.
-      result = await poll.query(
+      result = await pool.query(
         "SELECT slug, total_clicks FROM urls ORDER BY total_clicks DESC",
       );
     } else {
       //For precise information sync first then retrieve analytics
       const redis_clicks = await redis.get(`clicks:${slug}`);
       if (redis_clicks !== null) {
-        result = await poll.query(
+        result = await pool.query(
           "UPDATE urls SET total_clicks = total_clicks + $1 WHERE slug = $2 RETURNING total_clicks",
           [redis_clicks, slug],
         );
