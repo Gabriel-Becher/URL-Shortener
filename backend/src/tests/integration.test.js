@@ -3,12 +3,6 @@ import { app } from "../../main.js";
 import pool from "../../src/db/dbConnection.js";
 import { redis } from "../../src/db/redisConnection.js";
 
-if (process.env.ALLOW_TESTS !== "true") {
-  throw new Error(
-    "Cannot run tests. Set ALLOW_TESTS=true in .env to allow tests to run.",
-  );
-}
-
 afterAll(async () => {
   await pool.end();
   await redis.quit();

@@ -32,6 +32,5 @@ app.get("/:slug", redirectLimiter, redirectUrl);
 if (process.env.NODE_ENV !== "test") {
   app.listen(configs.appPort, () => {
     console.log(`Server is running on port ${configs.appPort}`);
-    console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
   });
 }
