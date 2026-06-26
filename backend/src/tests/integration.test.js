@@ -3,6 +3,20 @@ import { app } from "../../main.js";
 import pool from "../../src/db/dbConnection.js";
 import { redis } from "../../src/db/redisConnection.js";
 
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+import { dirname, resolve } from "path";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: resolve(__dirname, "../../.env"), override: true });
+
+if (process.env.NODE_ENV !== "test" && process.env.NODE_ENV !== "development") {
+  console.error(
+    "Tests are not allowed to run outside of tests or development. Please set NODE_ENV to 'test' in your .env file.",
+  );
+  process.exit(1);
+}
+
 afterAll(async () => {
   await pool.end();
   await redis.quit();
