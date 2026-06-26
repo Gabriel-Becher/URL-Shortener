@@ -1,6 +1,9 @@
-import { loadEnvFile } from "node:process";
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+import { dirname, resolve } from "path";
 
-loadEnvFile("./.env");
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: resolve(__dirname, "../../.env") });
 
 const configs = {
   appPort: process.env.PORT || 3000,

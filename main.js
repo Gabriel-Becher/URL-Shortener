@@ -9,7 +9,7 @@ import { rateLimiter } from "./src/middlewares/rateLimiter.js";
 import { startCronJob } from "./src/utils/redisSyncJob.js";
 import { getAnalytics } from "./src/routes/analyticsRoute.js";
 
-const app = express();
+export const app = express();
 let redirectLimiter = undefined;
 
 try {
@@ -29,6 +29,9 @@ app.get("/analytics/", getAnalytics);
 app.get("/analytics/:slug", getAnalytics);
 app.get("/:slug", redirectLimiter, redirectUrl);
 
-app.listen(configs.appPort, () => {
-  console.log(`Server is running on port ${configs.appPort}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(configs.appPort, () => {
+    console.log(`Server is running on port ${configs.appPort}`);
+    console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+  });
+}
