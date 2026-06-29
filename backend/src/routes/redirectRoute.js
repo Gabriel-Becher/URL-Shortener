@@ -11,6 +11,7 @@ export const redirectUrl = async (req, res) => {
     const cachedUrl = await redis.get(slug);
     if (cachedUrl) {
       redis.incr(`clicks:${slug}`); // Increment clicks
+      pool.query("INSERT INTO clicks (slug) VALUES ($1)", [slug]);
       return res.redirect(cachedUrl);
     }
     const query = "SELECT original FROM urls WHERE slug = $1";
@@ -24,6 +25,7 @@ export const redirectUrl = async (req, res) => {
       ex: 60 * 60 * 24 * 7,
     });
     redis.incr(`clicks:${slug}`);
+    pool.query("INSERT INTO clicks (slug) VALUES ($1)", [slug]);
     res.redirect(result.rows[0].original);
   } catch (error) {
     console.error("Error:", error);
